@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Dashboard | Four Brothers Cleaning</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1B33; --blue-deep:#163A6B; --blue:#215A9C; --blue-bright:#4F8FE0;
+    --steel:#5B6B7C; --ink:#1B2430; --paper:#F5F8FC; --white:#FFFFFF; --line:#DCE3ED;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);font-family:'Inter',system-ui,sans-serif;color:var(--ink);}
+  h1,h2,h3{font-family:'Archivo';color:var(--navy);margin:0;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  header{background:var(--white);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{width:42px;height:42px;object-fit:contain;}
+  .brand strong{font-family:'Archivo';font-weight:800;font-size:1rem;}
+  .brand span{display:block;font-size:.72rem;color:var(--steel);}
+  .logout{background:none;border:1px solid var(--line);border-radius:7px;padding:9px 16px;font-weight:600;font-size:.85rem;cursor:pointer;color:var(--ink);}
+  .logout:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+  main{padding:40px 0 80px;}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:32px;}
+  .panel h2{font-size:1.15rem;font-weight:800;margin-bottom:6px;}
+  .panel .hint{color:var(--steel);font-size:.88rem;margin-bottom:18px;}
+  input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:'Inter';background:var(--paper);}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--blue-bright);outline-offset:1px;background:var(--white);}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:7px;font-weight:700;font-size:.88rem;border:none;cursor:pointer;}
+  .btn-primary{background:var(--blue);color:var(--white);}
+  .btn-primary:hover{background:var(--blue-deep);}
+  .job-card{border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px;}
+  .job-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;}
+  .job-top h3{font-size:1.02rem;font-weight:700;}
+  .job-meta{color:var(--steel);font-size:.85rem;margin-top:4px;}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.74rem;font-weight:700;white-space:nowrap;}
+  .badge.Scheduled{background:#E7EFFB;color:var(--blue-deep);}
+  .badge.In-progress{background:#FFF3D6;color:#8A5A00;}
+  .badge.Completed{background:#E3F5E9;color:#1F7A45;}
+  .job-note{margin-top:10px;font-size:.88rem;color:var(--ink);background:var(--paper);border-radius:6px;padding:10px 12px;}
+  .job-actions{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;}
+  select.status-select{width:auto;padding:7px 10px;font-size:.85rem;}
+  .empty{color:var(--steel);font-size:.9rem;padding:16px 0;}
+  .notes-list{display:flex;flex-direction:column;gap:12px;}
+  .note{border:1px solid var(--line);border-radius:8px;padding:12px 14px;}
+  .note .meta{font-size:.75rem;color:var(--steel);margin-top:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-row">
+    <div class="brand">
+      <img src="logo.jpg" alt="Four Brothers Cleaning logo">
+      <div><strong>Four Brothers</strong><span>Staff dashboard</span></div>
+    </div>
+    <button class="logout" id="logoutBtn">Log out</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="panel">
+      <h2>Today's &amp; upcoming jobs</h2>
+      <p class="hint">Update the status as you go, and add a note if anything's worth flagging.</p>
+      <div id="jobsList"></div>
+      <p class="empty" id="jobsEmpty" style="display:none;">No jobs on the schedule yet.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Team notes</h2>
+      <p class="hint">Visible to everyone on the team, including admin.</p>
+      <form id="noteForm" style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+        <input id="noteAuthor" placeholder="Your name" style="max-width:160px;" required>
+        <input id="noteText" placeholder="Write a note for the team…" style="flex:1;min-width:200px;" required>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+      <div class="notes-list" id="notesList"></div>
+      <p class="empty" id="notesEmpty" style="display:none;">No team notes yet.</p>
+    </div>
+
+  </div>
+</main>
+
+<script src="dashboard-data.js"></script>
+<script>
+  requireRole('staff');
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+
+  let data = loadDashboard();
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function render(){
+    const list = document.getElementById('jobsList');
+    list.innerHTML = '';
+    document.getElementById('jobsEmpty').style.display = data.jobs.length ? 'none' : 'block';
+
+    data.jobs
+      .slice()
+      .sort((a,b) => (a.date || '').localeCompare(b.date || ''))
+      .forEach(job => {
+        const card = document.createElement('div');
+        card.className = 'job-card';
+        card.innerHTML = `
+          <div class="job-top">
+            <div>
+              <h3>${escapeHtml(job.client)} — ${escapeHtml(job.service)}</h3>
+              <div class="job-meta">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}${job.address ? ' · ' + escapeHtml(job.address) : ''}${job.staff ? ' · Assigned: ' + escapeHtml(job.staff) : ''}</div>
+            </div>
+            <span class="badge ${job.status.replace(' ','-')}">${job.status}</span>
+          </div>
+          ${job.note ? `<div class="job-note">${escapeHtml(job.note)}</div>` : ''}
+          <div class="job-actions">
+            <select class="status-select" data-id="${job.id}">
+              <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
+              <option ${job.status==='In progress'?'selected':''}>In progress</option>
+              <option ${job.status==='Completed'?'selected':''}>Completed</option>
+            </select>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+    list.querySelectorAll('.status-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const job = data.jobs.find(j => j.id === sel.dataset.id);
+        if(job){ job.status = sel.value; saveDashboard(data); render(); }
+      });
+    });
+
+    const notesList = document.getElementById('notesList');
+    notesList.innerHTML = '';
+    document.getElementById('notesEmpty').style.display = data.notes.length ? 'none' : 'block';
+    data.notes
+      .slice()
+      .sort((a,b) => b.date.localeCompare(a.date))
+      .forEach(note => {
+        const div = document.createElement('div');
+        div.className = 'note';
+        div.innerHTML = `
+          <div>${escapeHtml(note.text)}</div>
+          <div class="meta">${escapeHtml(note.author)} · ${new Date(note.date).toLocaleString('en-CA')}</div>
+        `;
+        notesList.appendChild(div);
+      });
+  }
+
+  document.getElementById('noteForm').addEventListener('submit', e => {
+    e.preventDefault();
+    data.notes.push({
+      id: uid(),
+      author: document.getElementById('noteAuthor').value,
+      text: document.getElementById('noteText').value,
+      date: new Date().toISOString()
+    });
+    saveDashboard(data);
+    document.getElementById('noteText').value = '';
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

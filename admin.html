@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Four Brothers Cleaning</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1B33; --blue-deep:#163A6B; --blue:#215A9C; --blue-bright:#4F8FE0;
+    --steel:#5B6B7C; --ink:#1B2430; --paper:#F5F8FC; --white:#FFFFFF; --line:#DCE3ED;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);font-family:'Inter',system-ui,sans-serif;color:var(--ink);}
+  h1,h2,h3{font-family:'Archivo';color:var(--navy);margin:0;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  header{background:var(--white);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{width:42px;height:42px;object-fit:contain;}
+  .brand strong{font-family:'Archivo';font-weight:800;font-size:1rem;}
+  .brand span{display:block;font-size:.72rem;color:var(--steel);}
+  .logout{background:none;border:1px solid var(--line);border-radius:7px;padding:9px 16px;font-weight:600;font-size:.85rem;cursor:pointer;color:var(--ink);}
+  .logout:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+  main{padding:40px 0 80px;}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:32px;}
+  .panel h2{font-size:1.15rem;font-weight:800;margin-bottom:18px;}
+  .field-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .field{margin-bottom:14px;}
+  label{display:block;font-size:.8rem;font-weight:600;margin-bottom:5px;color:var(--navy);}
+  input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:'Inter';background:var(--paper);}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--blue-bright);outline-offset:1px;background:var(--white);}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:7px;font-weight:700;font-size:.88rem;border:none;cursor:pointer;text-decoration:none;}
+  .btn-primary{background:var(--blue);color:var(--white);}
+  .btn-primary:hover{background:var(--blue-deep);}
+  .btn-danger{background:#FBEAEA;color:#B3261E;border:1px solid #F3C9C9;padding:6px 12px;font-size:.78rem;}
+  .btn-danger:hover{background:#F3C9C9;}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;}
+  th{text-align:left;color:var(--steel);font-weight:600;font-size:.78rem;text-transform:none;padding:8px 10px;border-bottom:1px solid var(--line);}
+  td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.74rem;font-weight:700;white-space:nowrap;}
+  .badge.Scheduled{background:#E7EFFB;color:var(--blue-deep);}
+  .badge.In-progress{background:#FFF3D6;color:#8A5A00;}
+  .badge.Completed{background:#E3F5E9;color:#1F7A45;}
+  select.status-select{padding:6px 8px;font-size:.8rem;}
+  .empty{color:var(--steel);font-size:.9rem;padding:16px 0;}
+  .notes-list{display:flex;flex-direction:column;gap:12px;}
+  .note{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .note .meta{font-size:.75rem;color:var(--steel);margin-top:4px;}
+  @media (max-width:760px){
+    .field-row{grid-template-columns:1fr;}
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}
+    tr{border-bottom:1px solid var(--line);padding:10px 0;}
+    td{border:none;padding:4px 0;}
+    td::before{content:attr(data-label);display:block;font-size:.72rem;color:var(--steel);font-weight:600;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-row">
+    <div class="brand">
+      <img src="logo.jpg" alt="Four Brothers Cleaning logo">
+      <div><strong>Four Brothers</strong><span>Admin dashboard</span></div>
+    </div>
+    <button class="logout" id="logoutBtn">Log out</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="panel">
+      <h2>Add a job</h2>
+      <form id="jobForm">
+        <div class="field-row">
+          <div class="field"><label for="client">Client name</label><input id="client" required></div>
+          <div class="field"><label for="jaddress">Address / area</label><input id="jaddress"></div>
+          <div class="field"><label for="jservice">Service</label>
+            <select id="jservice">
+              <option>Residential cleaning</option>
+              <option>Commercial &amp; office cleaning</option>
+              <option>Move-in / move-out cleaning</option>
+              <option>Post-construction cleaning</option>
+              <option>Deep cleaning</option>
+              <option>Carpet &amp; upholstery cleaning</option>
+              <option>Window cleaning</option>
+              <option>Airbnb &amp; rental turnover</option>
+              <option>Disinfection &amp; sanitizing</option>
+              <option>Custom / specialty</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="jdate">Date</label><input type="date" id="jdate" required></div>
+          <div class="field"><label for="jtime">Time</label><input type="time" id="jtime"></div>
+          <div class="field"><label for="jstaff">Assigned to</label><input id="jstaff" placeholder="Staff name"></div>
+        </div>
+        <div class="field">
+          <label for="jnote">Notes for this job</label>
+          <textarea id="jnote" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add job</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>All jobs</h2>
+      <table id="jobsTable">
+        <thead>
+          <tr><th>Date</th><th>Client</th><th>Service</th><th>Assigned</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="jobsBody"></tbody>
+      </table>
+      <p class="empty" id="jobsEmpty" style="display:none;">No jobs yet — add one above.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Team notes</h2>
+      <form id="noteForm" style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+        <input id="noteAuthor" placeholder="Your name" style="max-width:160px;" required>
+        <input id="noteText" placeholder="Write a note for the team…" style="flex:1;min-width:200px;" required>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+      <div class="notes-list" id="notesList"></div>
+      <p class="empty" id="notesEmpty" style="display:none;">No team notes yet.</p>
+    </div>
+
+  </div>
+</main>
+
+<script src="dashboard-data.js"></script>
+<script>
+  requireRole('admin');
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+
+  let data = loadDashboard();
+
+  function render(){
+    const body = document.getElementById('jobsBody');
+    body.innerHTML = '';
+    document.getElementById('jobsEmpty').style.display = data.jobs.length ? 'none' : 'block';
+    data.jobs
+      .slice()
+      .sort((a,b) => (a.date || '').localeCompare(b.date || ''))
+      .forEach(job => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Date">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}</td>
+          <td data-label="Client"><strong>${escapeHtml(job.client)}</strong><br><span style="color:var(--steel);font-size:.8rem;">${escapeHtml(job.address || '')}</span></td>
+          <td data-label="Service">${escapeHtml(job.service)}</td>
+          <td data-label="Assigned">${escapeHtml(job.staff || '—')}</td>
+          <td data-label="Status">
+            <select class="status-select" data-id="${job.id}">
+              <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
+              <option ${job.status==='In progress'?'selected':''}>In progress</option>
+              <option ${job.status==='Completed'?'selected':''}>Completed</option>
+            </select>
+          </td>
+          <td data-label=""><button class="btn-danger" data-del="${job.id}">Delete</button></td>
+        `;
+        body.appendChild(tr);
+      });
+
+    body.querySelectorAll('.status-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const job = data.jobs.find(j => j.id === sel.dataset.id);
+        if(job){ job.status = sel.value; saveDashboard(data); }
+      });
+    });
+    body.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        data.jobs = data.jobs.filter(j => j.id !== btn.dataset.del);
+        saveDashboard(data);
+        render();
+      });
+    });
+
+    const notesList = document.getElementById('notesList');
+    notesList.innerHTML = '';
+    document.getElementById('notesEmpty').style.display = data.notes.length ? 'none' : 'block';
+    data.notes
+      .slice()
+      .sort((a,b) => b.date.localeCompare(a.date))
+      .forEach(note => {
+        const div = document.createElement('div');
+        div.className = 'note';
+        div.innerHTML = `
+          <div>
+            <div>${escapeHtml(note.text)}</div>
+            <div class="meta">${escapeHtml(note.author)} · ${new Date(note.date).toLocaleString('en-CA')}</div>
+          </div>
+          <button class="btn-danger" data-delnote="${note.id}">Delete</button>
+        `;
+        notesList.appendChild(div);
+      });
+    notesList.querySelectorAll('[data-delnote]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        data.notes = data.notes.filter(n => n.id !== btn.dataset.delnote);
+        saveDashboard(data);
+        render();
+      });
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  document.getElementById('jobForm').addEventListener('submit', e => {
+    e.preventDefault();
+    data.jobs.push({
+      id: uid(),
+      client: document.getElementById('client').value,
+      address: document.getElementById('jaddress').value,
+      service: document.getElementById('jservice').value,
+      date: document.getElementById('jdate').value,
+      time: document.getElementById('jtime').value,
+      staff: document.getElementById('jstaff').value,
+      note: document.getElementById('jnote').value,
+      status: 'Scheduled'
+    });
+    saveDashboard(data);
+    e.target.reset();
+    render();
+  });
+
+  document.getElementById('noteForm').addEventListener('submit', e => {
+    e.preventDefault();
+    data.notes.push({
+      id: uid(),
+      author: document.getElementById('noteAuthor').value,
+      text: document.getElementById('noteText').value,
+      date: new Date().toISOString()
+    });
+    saveDashboard(data);
+    document.getElementById('noteText').value = '';
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

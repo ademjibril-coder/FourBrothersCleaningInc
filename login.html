@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff &amp; Admin Login | Four Brothers Cleaning</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1B33; --blue-deep:#163A6B; --blue:#215A9C; --blue-bright:#4F8FE0;
+    --steel:#5B6B7C; --ink:#1B2430; --paper:#F5F8FC; --white:#FFFFFF; --line:#DCE3ED;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:var(--paper);font-family:'Inter',system-ui,sans-serif;color:var(--ink);padding:24px;
+  }
+  .card{
+    width:100%;max-width:400px;background:var(--white);border:1px solid var(--line);
+    border-radius:14px;padding:36px;box-shadow:0 20px 50px rgba(11,27,51,.08);
+  }
+  .card img{width:56px;height:56px;object-fit:contain;display:block;margin:0 auto 14px;}
+  h1{font-family:'Archivo';font-size:1.3rem;font-weight:800;color:var(--navy);text-align:center;margin:0 0 4px;}
+  .sub{text-align:center;color:var(--steel);font-size:.9rem;margin-bottom:26px;}
+  .tabs{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:22px;}
+  .tab{flex:1;padding:10px;text-align:center;font-weight:700;font-size:.9rem;cursor:pointer;background:var(--paper);color:var(--steel);border:none;}
+  .tab.active{background:var(--blue);color:var(--white);}
+  label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;}
+  input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:7px;font-size:.95rem;margin-bottom:16px;background:var(--paper);}
+  input:focus{outline:2px solid var(--blue-bright);outline-offset:1px;background:var(--white);}
+  button.submit{
+    width:100%;padding:13px;border:none;border-radius:7px;background:var(--blue);
+    color:var(--white);font-weight:700;font-size:.95rem;cursor:pointer;
+  }
+  button.submit:hover{background:var(--blue-deep);}
+  #error{color:#B3261E;font-size:.85rem;margin-top:12px;text-align:center;display:none;}
+  .back{display:block;text-align:center;margin-top:22px;font-size:.85rem;color:var(--steel);text-decoration:none;}
+  .back:hover{color:var(--navy);}
+</style>
+</head>
+<body>
+  <div class="card">
+    <img src="logo.jpg" alt="Four Brothers Cleaning logo">
+    <h1>Team sign in</h1>
+    <p class="sub">For Four Brothers staff and admin only.</p>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" id="tabAdmin" role="tab" aria-selected="true">Admin</button>
+      <button type="button" class="tab" id="tabStaff" role="tab" aria-selected="false">Staff</button>
+    </div>
+
+    <form id="loginForm">
+      <label for="password">Password</label>
+      <input type="password" id="password" required autocomplete="current-password">
+      <button type="submit" class="submit" id="submitBtn">Sign in as admin</button>
+      <p id="error">That password isn't right. Try again.</p>
+    </form>
+    <a class="back" href="index.html">← Back to the main site</a>
+  </div>
+
+<script>
+  /* Change these two passwords, then re-upload this file to GitHub. */
+  const ADMIN_PASSWORD = 'FourBrosAdmin2026';
+  const STAFF_PASSWORD = 'FourBrosTeam2026';
+
+  let role = 'admin';
+  const tabAdmin = document.getElementById('tabAdmin');
+  const tabStaff = document.getElementById('tabStaff');
+  const submitBtn = document.getElementById('submitBtn');
+  const error = document.getElementById('error');
+
+  function setRole(r){
+    role = r;
+    error.style.display = 'none';
+    tabAdmin.classList.toggle('active', r === 'admin');
+    tabStaff.classList.toggle('active', r === 'staff');
+    tabAdmin.setAttribute('aria-selected', r === 'admin');
+    tabStaff.setAttribute('aria-selected', r === 'staff');
+    submitBtn.textContent = 'Sign in as ' + r;
+  }
+  tabAdmin.addEventListener('click', () => setRole('admin'));
+  tabStaff.addEventListener('click', () => setRole('staff'));
+
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const pw = document.getElementById('password').value;
+    const correct = role === 'admin' ? ADMIN_PASSWORD : STAFF_PASSWORD;
+    if(pw === correct){
+      sessionStorage.setItem('fb_role', role);
+      window.location.href = role === 'admin' ? 'admin.html' : 'staff.html';
+    } else {
+      error.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
