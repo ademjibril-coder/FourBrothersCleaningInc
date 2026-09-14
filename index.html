@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Four Brothers Commercial &amp; Residential Cleaning Inc. | Scarborough &amp; GTA</title>
+<meta name="description" content="Four Brothers Commercial and Residential Cleaning Inc. — licensed, insured cleaning for homes, offices and construction sites across Scarborough and the GTA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1B33;
+    --blue-deep:#163A6B;
+    --blue:#215A9C;
+    --blue-bright:#4F8FE0;
+    --steel:#5B6B7C;
+    --ink:#1B2430;
+    --paper:#F5F8FC;
+    --white:#FFFFFF;
+    --line:#DCE3ED;
+    --max:1160px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand{
+    font-family:'Archivo',system-ui,sans-serif;
+    color:var(--navy);
+    line-height:1.12;
+    margin:0;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:3px solid var(--blue-bright);outline-offset:3px;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,248,252,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;padding:12px 24px;
+  }
+  .brand-block{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0;flex:1 1 auto;overflow:hidden;}
+  .brand-block img{width:52px;height:52px;object-fit:contain;flex:0 0 auto;}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15;min-width:0;overflow:hidden;}
+  .brand-text strong{font-family:'Archivo';font-weight:800;font-size:1.05rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+  .brand-text span{font-size:.72rem;color:var(--steel);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+  nav.primary{display:flex;align-items:center;gap:28px;}
+  nav.primary a{font-size:.95rem;font-weight:600;text-decoration:none;color:var(--ink);padding:6px 2px;border-bottom:2px solid transparent;transition:border-color .15s;}
+  nav.primary a:hover{border-color:var(--blue-bright);}
+  .call-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--blue);color:var(--white)!important;
+    padding:10px 18px;border-radius:6px;font-weight:700;font-size:.92rem;
+    text-decoration:none;white-space:nowrap;transition:background .15s;
+    flex:0 0 auto;
+  }
+  .call-btn:hover{background:var(--blue-deep);}
+  .menu-btn{display:none;flex:0 0 auto;background:none;border:1px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer;}
+  .menu-btn span{display:block;width:20px;height:2px;background:var(--navy);margin:4px 0;}
+
+  /* ---------- hero with wipe reveal ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);}
+  .hero-inner{
+    max-width:var(--max);margin:0 auto;padding:96px 24px 100px;
+    position:relative;z-index:2;
+  }
+  .hero-eyebrow{font-size:.85rem;color:var(--blue-deep);font-weight:600;margin-bottom:18px;}
+  .hero h1{font-size:clamp(2.4rem,5vw,3.6rem);font-weight:900;max-width:15ch;letter-spacing:-.01em;}
+  .hero .clean-word{position:relative;display:inline-block;color:var(--blue);}
+  .hero p.lede{max-width:52ch;color:var(--steel);font-size:1.12rem;margin-top:22px;}
+  .hero-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 26px;border-radius:6px;font-weight:700;font-size:.98rem;
+    text-decoration:none;transition:transform .12s,background .15s,box-shadow .15s;
+    border:1.5px solid transparent;
+  }
+  .btn-primary{background:var(--blue);color:var(--white);}
+  .btn-primary:hover{background:var(--blue-deep);}
+  .btn-ghost{background:transparent;border-color:var(--navy);color:var(--navy);}
+  .btn-ghost:hover{background:var(--navy);color:var(--white);}
+
+  .wipe-layer{
+    position:absolute;inset:0;z-index:1;
+    background:
+      linear-gradient(120deg,rgba(11,27,51,.06) 0%, rgba(11,27,51,.02) 55%, transparent 75%),
+      radial-gradient(circle at 82% 20%, rgba(79,143,224,.18), transparent 55%);
+  }
+  .streak{
+    position:absolute;top:-10%;bottom:-10%;width:38%;
+    left:-40%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.9) 45%, rgba(79,143,224,.35) 52%, transparent);
+    transform:skewX(-14deg);
+    z-index:1;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .streak{animation:sweep 1.6s cubic-bezier(.65,0,.35,1) 1;}
+  }
+  @keyframes sweep{
+    from{left:-40%;}
+    to{left:120%;}
+  }
+  .hero-grid-icon{
+    position:absolute;right:-60px;bottom:-60px;width:340px;height:340px;
+    opacity:.5;z-index:0;
+  }
+
+  /* ---------- trust strip ---------- */
+  .trust{background:var(--navy);color:var(--white);}
+  .trust .wrap{
+    display:flex;flex-wrap:wrap;gap:0;padding:22px 24px;
+  }
+  .trust-item{
+    flex:1 1 220px;display:flex;align-items:center;gap:10px;
+    padding:8px 22px;border-left:1px solid rgba(255,255,255,.14);
+    font-size:.92rem;font-weight:500;
+  }
+  .trust-item:first-child{border-left:none;}
+  .trust-item svg{flex:none;width:20px;height:20px;color:var(--blue-bright);}
+
+  /* ---------- section shell ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:56ch;margin-bottom:48px;}
+  .section-head .kicker{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;}
+  .section-head p{color:var(--steel);margin-top:14px;font-size:1.02rem;}
+
+  /* ---------- services (editorial list) ---------- */
+  .service-list{border-top:1px solid var(--line);}
+  .service-row{
+    display:grid;grid-template-columns:64px 1fr auto;gap:22px;align-items:start;
+    padding:28px 0;border-bottom:1px solid var(--line);
+  }
+  .service-row .icon{
+    width:52px;height:52px;border-radius:10px;background:var(--white);
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--blue);
+  }
+  .service-row .icon svg{width:26px;height:26px;}
+  .service-row h3{font-size:1.18rem;font-weight:700;margin-bottom:6px;}
+  .service-row p{color:var(--steel);margin:0;max-width:62ch;font-size:.98rem;}
+  .service-row .tag{
+    align-self:center;font-size:.78rem;font-weight:700;color:var(--blue-deep);
+    background:#E7EFFB;border:1px solid #CFE0F5;padding:6px 12px;border-radius:999px;
+    white-space:nowrap;
+  }
+  .service-row.custom{background:linear-gradient(90deg,rgba(79,143,224,.06),transparent);}
+  .service-row.custom .icon{background:var(--blue);color:var(--white);border-color:var(--blue);}
+
+  /* ---------- why us ---------- */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px 56px;}
+  .why-item{display:flex;gap:16px;}
+  .why-item .num{
+    font-family:'Archivo';font-weight:800;font-size:1.4rem;color:var(--blue-bright);
+    min-width:36px;
+  }
+  .why-item h3{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+  .why-item p{color:var(--steel);margin:0;font-size:.96rem;}
+
+  /* ---------- how it works ---------- */
+  .steps{
+    background:var(--white);border:1px solid var(--line);border-radius:14px;
+    display:grid;grid-template-columns:repeat(3,1fr);
+  }
+  .step{padding:36px 32px;position:relative;}
+  .step:not(:last-child){border-right:1px solid var(--line);}
+  .step .step-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--white);
+    font-family:'Archivo';font-weight:800;font-size:.95rem;margin-bottom:18px;
+  }
+  .step h3{font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+  .step p{color:var(--steel);margin:0;font-size:.95rem;}
+
+  /* ---------- areas ---------- */
+  .areas-panel{
+    background:var(--blue-deep);color:var(--white);border-radius:16px;
+    padding:48px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;
+  }
+  .areas-panel h2{color:var(--white);font-size:clamp(1.5rem,2.6vw,2rem);font-weight:800;}
+  .areas-panel p{color:#CBDAF0;margin-top:14px;max-width:44ch;}
+  .chip-list{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}
+  .chip{
+    border:1px solid rgba(255,255,255,.28);color:var(--white);
+    padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:500;
+  }
+
+  /* ---------- contact ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;}
+  .info-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:32px;}
+  .info-card h3{font-size:1.1rem;font-weight:700;margin-bottom:18px;}
+  .info-line{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);}
+  .info-line:first-of-type{border-top:none;padding-top:0;}
+  .info-line svg{width:20px;height:20px;color:var(--blue);flex:none;margin-top:2px;}
+  .info-line a{text-decoration:none;font-weight:600;color:var(--navy);}
+  .info-line span.label{display:block;font-size:.78rem;color:var(--steel);margin-bottom:2px;}
+
+  form{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:32px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .field{margin-bottom:18px;}
+  .field.full{grid-column:1/-1;}
+  label{display:block;font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  input,select,textarea{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:7px;
+    font-family:'Inter';font-size:.95rem;background:var(--paper);color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:96px;}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--blue-bright);outline-offset:1px;background:var(--white);}
+  .form-note{font-size:.82rem;color:var(--steel);margin-top:10px;}
+  .field-error{display:none;color:#B3261E;font-size:.78rem;margin-top:5px;}
+  .field.invalid input,.field.invalid select{border-color:#B3261E;background:#FDF3F3;}
+  .field.invalid .field-error{display:block;}
+  #formStatus{margin-top:14px;font-size:.9rem;font-weight:600;display:none;}
+  #formStatus.success{color:#1F7A45;}
+  #formStatus.error{color:#B3261E;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--navy);color:#B9C6DA;padding:56px 0 28px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.12);}
+  .footer-brand{display:flex;gap:12px;align-items:flex-start;}
+  .footer-brand img{width:46px;height:46px;object-fit:contain;}
+  .footer-brand strong{color:var(--white);font-family:'Archivo';font-size:1rem;display:block;}
+  .footer-brand p{margin-top:10px;font-size:.9rem;max-width:34ch;}
+  footer h4{color:var(--white);font-size:.9rem;font-weight:700;margin-bottom:14px;}
+  footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  footer a{text-decoration:none;font-size:.9rem;color:#B9C6DA;}
+  footer a:hover{color:var(--white);}
+  .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:22px;font-size:.82rem;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:880px){
+    nav.primary{position:fixed;top:73px;left:0;right:0;bottom:0;background:var(--paper);
+      flex-direction:column;align-items:flex-start;padding:28px 24px;gap:22px;
+      transform:translateX(100%);transition:transform .25s ease;overflow-y:auto;}
+    nav.primary.open{transform:translateX(0);}
+    nav.primary a{font-size:1.1rem;}
+    .menu-btn{display:block;}
+    .call-btn{padding:9px 14px;font-size:.85rem;}
+    .why-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .step:not(:last-child){border-right:none;border-bottom:1px solid var(--line);}
+    .areas-panel{grid-template-columns:1fr;padding:32px;}
+    .contact-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .service-row{grid-template-columns:52px 1fr;}
+    .service-row .tag{grid-column:2;margin-top:4px;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:420px){
+    .brand-block img{width:38px;height:38px;}
+    .brand-text span{display:none;}
+    .brand-text strong{font-size:.92rem;}
+    .call-btn{padding:10px;border-radius:50%;}
+    .call-btn .call-text{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-row">
+    <a href="#top" class="brand-block">
+      <img src="logo.jpg" alt="Four Brothers Commercial and Residential Cleaning Inc. logo">
+      <span class="brand-text">
+        <strong>FOUR BROTHERS</strong>
+        <span>Commercial &amp; Residential Cleaning</span>
+      </span>
+    </a>
+    <nav class="primary" id="primaryNav">
+      <a href="#services">Services</a>
+      <a href="#why">Why us</a>
+      <a href="#how">How it works</a>
+      <a href="#areas">Service area</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="call-btn" href="tel:+16477714532" aria-label="Call (647) 771-4532">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.79.65 2.65a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.43-1.42a2 2 0 0 1 2.11-.45c.86.31 1.75.53 2.65.65A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="call-text">(647) 771-4532</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="wipe-layer"></div>
+    <div class="streak" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Scarborough &amp; the Greater Toronto Area</p>
+      <h1>Every space, <span class="clean-word">left spotless.</span></h1>
+      <p class="lede">Four Brothers Commercial and Residential Cleaning Inc. handles the cleaning so you don't have to — homes, offices, move-outs, job sites, and everything in between, done to a standard you can trust.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#contact">Get a free quote</a>
+        <a class="btn btn-ghost" href="tel:+16477714532">Call (647) 771-4532</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="wrap">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Licensed &amp; insured
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+        Background-checked crews
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-5.5 5-10 5-10z"/></svg>
+        Eco-conscious products
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-4-8-7.5-8-12a8 8 0 0 1 16 0c0 4.5-4 8-8 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Serving all of the GTA
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">What we do</p>
+        <h2>Cleaning services for homes, businesses, and everything between.</h2>
+        <p>Eight core services cover most of what our clients need. If yours isn't listed, that's what the last one is for.</p>
+      </div>
+
+      <div class="service-list">
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></div>
+          <div><h3>Residential cleaning</h3><p>Regular, one-time, or seasonal cleaning for houses, condos, and apartments — kitchens, bathrooms, floors, and every room in between.</p></div>
+          <span class="tag">Recurring or one-time</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5"/></svg></div>
+          <div><h3>Commercial &amp; office cleaning</h3><p>After-hours and scheduled cleaning for offices, retail spaces, and commercial units, tailored to your business hours.</p></div>
+          <span class="tag">Flexible hours</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M6 21V9l6-5 6 5v12M10 21v-6h4v6"/></svg></div>
+          <div><h3>Move-in / move-out cleaning</h3><p>A full top-to-bottom clean before you hand over keys or move into a new place, built to satisfy landlord and property manager checklists.</p></div>
+          <span class="tag">Deposit-ready</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l7-7M14 6l4 4M6.5 17.5l-2 2M14.5 5.5L18 2M9 15l6-6"/></svg></div>
+          <div><h3>Post-construction cleaning</h3><p>Dust, debris, and residue removal after a renovation or build, so the space is livable and presentable from day one.</p></div>
+          <span class="tag">Site-ready handover</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v6M9 9h6l1 12H8L9 9z"/></svg></div>
+          <div><h3>Deep cleaning</h3><p>A detailed pass into the spots routine cleaning skips — baseboards, grout, appliances, vents, and behind furniture.</p></div>
+          <span class="tag">Top to bottom</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-5h6v5"/></svg></div>
+          <div><h3>Airbnb &amp; rental turnover</h3><p>Fast, consistent cleaning between guests, with fresh linens and a repeatable checklist so every stay starts the same way.</p></div>
+          <span class="tag">Same-day turnover</span>
+        </div>
+
+        <div class="service-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div><h3>Disinfection &amp; sanitizing</h3><p>High-touch surface disinfection for offices, clinics, gyms, and shared spaces, using hospital-grade products.</p></div>
+          <span class="tag">High-touch surfaces</span>
+        </div>
+
+        <div class="service-row custom">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.2L12 16.4 5.7 20.8 8 13.6 2 9.2h7.6z"/></svg></div>
+          <div><h3>Custom &amp; specialty cleaning</h3><p>Anything that doesn't fit neatly into a category — event cleanup, industrial units, seasonal projects, or a one-off job with unusual requirements. Describe what you need and we'll put together a plan for it.</p></div>
+          <span class="tag">Tell us what you need</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Why Four Brothers</p>
+        <h2>Run like family, held to a professional standard.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <span class="num">01</span>
+          <div><h3>One point of contact</h3><p>You deal directly with the people running the job — no call centre, no runaround.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="num">02</span>
+          <div><h3>Consistent crews</h3><p>The same trained team returns for recurring cleans, so they already know your space.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="num">03</span>
+          <div><h3>Fully insured work</h3><p>Every job is covered, so you're protected on residential and commercial sites alike.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="num">04</span>
+          <div><h3>Straightforward pricing</h3><p>Quotes are based on the actual job, given up front, with no surprise add-ons after the fact.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Getting started</p>
+        <h2>Booked in three steps.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <h3>Tell us what you need</h3>
+          <p>Call, email, or send the form below with your space and the type of cleaning you're after.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <h3>Get a free quote</h3>
+          <p>We confirm scope and timing and give you a clear price — no obligation to book.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <h3>We show up and clean</h3>
+          <p>Your crew arrives on schedule and gets to work, one-time or on a recurring plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA -->
+  <section id="areas">
+    <div class="wrap">
+      <div class="areas-panel">
+        <div>
+          <p class="kicker" style="color:var(--blue-bright);">Where we work</p>
+          <h2>Based in Scarborough. Working across the GTA.</h2>
+          <p>Our home base is Scarborough, and we take on regular jobs throughout the surrounding region for both households and businesses.</p>
+        </div>
+        <div class="chip-list">
+          <span class="chip">Scarborough</span>
+          <span class="chip">Toronto</span>
+          <span class="chip">North York</span>
+          <span class="chip">Etobicoke</span>
+          <span class="chip">Markham</span>
+          <span class="chip">Pickering</span>
+          <span class="chip">Ajax</span>
+          <span class="chip">Whitby</span>
+          <span class="chip">Vaughan</span>
+          <span class="chip">Mississauga</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="background:var(--white);border-top:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Get in touch</p>
+        <h2>Request a free quote.</h2>
+        <p>Share a few details about the job and we'll get back to you with pricing and availability.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="info-card">
+          <h3>Contact details</h3>
+          <div class="info-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.79.65 2.65a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.43-1.42a2 2 0 0 1 2.11-.45c.86.31 1.75.53 2.65.65A2 2 0 0 1 22 16.92z"/></svg>
+            <div><span class="label">Call or text</span><a href="tel:+16477714532">(647) 771-4532</a><br><a href="tel:+14376605078">(437) 660-5078</a></div>
+          </div>
+          <div class="info-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+            <div><span class="label">Email</span><a href="mailto:fourbrotherscleaning2026@gmail.com">fourbrotherscleaning2026@gmail.com</a></div>
+          </div>
+          <div class="info-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-4-8-7.5-8-12a8 8 0 0 1 16 0c0 4.5-4 8-8 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div><span class="label">Address</span><span>30 Gordonridge Pl<br>Scarborough, ON M1K 4H7</span></div>
+          </div>
+          <div class="info-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <div><span class="label">Hours</span><span>Mon–Sat, 8:00 AM – 7:00 PM<br>After-hours by arrangement</span></div>
+          </div>
+        </div>
+
+        <form id="quoteForm" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" required>
+              <span class="field-error" id="err-name"></span>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+              <span class="field-error" id="err-email"></span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Phone number</label>
+              <input id="phone" name="phone" type="tel" required pattern="[0-9+\-\s()]{7,15}" placeholder="(647) 555-0123">
+              <span class="field-error" id="err-phone"></span>
+            </div>
+            <div class="field">
+              <label for="service">Type of cleaning</label>
+              <select id="service" name="service">
+                <option>Residential cleaning</option>
+                <option>Commercial &amp; office cleaning</option>
+                <option>Move-in / move-out cleaning</option>
+                <option>Post-construction cleaning</option>
+                <option>Deep cleaning</option>
+                <option>Airbnb &amp; rental turnover</option>
+                <option>Disinfection &amp; sanitizing</option>
+                <option>Custom / not listed</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="area">City / area</label>
+            <input id="area" name="area" type="text" placeholder="e.g. Scarborough">
+          </div>
+          <div class="field full">
+            <label for="details">Tell us about the job</label>
+            <textarea id="details" name="details" placeholder="Size of space, how often you need it cleaned, and any specifics."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submitQuote" style="width:100%;justify-content:center;">Request my free quote</button>
+          <p class="form-note">We'll get back to you by email or phone, usually within one business day.</p>
+          <p id="formStatus"></p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="logo.jpg" alt="Four Brothers Cleaning logo">
+        <div>
+          <strong>FOUR BROTHERS COMMERCIAL AND RESIDENTIAL CLEANING INC.</strong>
+          <p>Licensed, insured cleaning for homes, offices, and job sites across Scarborough and the GTA.</p>
+        </div>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why">Why us</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#areas">Service area</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+16477714532">(647) 771-4532</a></li>
+          <li><a href="tel:+14376605078">(437) 660-5078</a></li>
+          <li><a href="mailto:fourbrotherscleaning2026@gmail.com">fourbrotherscleaning2026@gmail.com</a></li>
+          <li>30 Gordonridge Pl, Scarborough, ON M1K 4H7</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> FOUR BROTHERS COMMERCIAL AND RESIDENTIAL CLEANING INC. All rights reserved.</span>
+      <span>Scarborough, Ontario, Canada · <a href="login.html" style="color:#B9C6DA;">Staff &amp; admin login</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.getElementById('primaryNav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen);
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
+
+  const form = document.getElementById('quoteForm');
+  const status = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitQuote');
+
+  /* Replace with your own endpoint from formspree.io — see the note below the form. */
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  const validators = {
+    name: v => v.trim().length > 0 || 'Enter your name.',
+    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Enter a valid email address.',
+    phone: v => /^[0-9+\-\s()]{7,15}$/.test(v) || 'Enter a valid phone number.'
+  };
+
+  function validateField(id){
+    const input = document.getElementById(id);
+    const field = input.closest('.field');
+    const error = document.getElementById('err-' + id);
+    const result = validators[id](input.value);
+    if(result === true){
+      field.classList.remove('invalid');
+      error.textContent = '';
+      return true;
+    }
+    field.classList.add('invalid');
+    error.textContent = result;
+    return false;
+  }
+
+  ['name','email','phone'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', () => validateField(id));
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const checks = ['name','email','phone'].map(validateField);
+    if(checks.includes(false)){
+      status.className = 'error';
+      status.style.display = 'block';
+      status.textContent = 'Please fix the highlighted fields before submitting.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    status.style.display = 'none';
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(res => {
+      if(res.ok){
+        status.className = 'success';
+        status.textContent = "Thanks — your request is in. We'll be in touch soon.";
+        form.reset();
+      } else {
+        throw new Error('Submission failed');
+      }
+    }).catch(() => {
+      status.className = 'error';
+      status.textContent = "Something went wrong sending that. Please call or email us directly instead.";
+    }).finally(() => {
+      status.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request my free quote';
+    });
+  });
+</script>
+
+</body>
+</html>
