@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Staff Dashboard | Four Brothers Cleaning</title>
+<title>Staff Dashboard | FOUR BROTHERS Cleaning</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -53,8 +53,8 @@
 <header>
   <div class="nav-row">
     <div class="brand">
-      <img src="logo.jpg" alt="Four Brothers Cleaning logo">
-      <div><strong>Four Brothers</strong><span>Staff dashboard</span></div>
+      <img src="logo.jpg" alt="FOUR BROTHERS Cleaning logo">
+      <div><strong>FOUR BROTHERS</strong><span>Staff dashboard</span></div>
     </div>
     <button class="logout" id="logoutBtn">Log out</button>
   </div>
@@ -85,12 +85,14 @@
   </div>
 </main>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="dashboard-data.js"></script>
 <script>
-  requireRole('staff');
   document.getElementById('logoutBtn').addEventListener('click', logout);
-
-  let data = loadDashboard();
 
   function escapeHtml(str){
     const d = document.createElement('div');
@@ -98,75 +100,68 @@
     return d.innerHTML;
   }
 
-  function render(){
+  function renderJobs(jobs){
     const list = document.getElementById('jobsList');
     list.innerHTML = '';
-    document.getElementById('jobsEmpty').style.display = data.jobs.length ? 'none' : 'block';
+    document.getElementById('jobsEmpty').style.display = jobs.length ? 'none' : 'block';
 
-    data.jobs
-      .slice()
-      .sort((a,b) => (a.date || '').localeCompare(b.date || ''))
-      .forEach(job => {
-        const card = document.createElement('div');
-        card.className = 'job-card';
-        card.innerHTML = `
-          <div class="job-top">
-            <div>
-              <h3>${escapeHtml(job.client)} — ${escapeHtml(job.service)}</h3>
-              <div class="job-meta">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}${job.address ? ' · ' + escapeHtml(job.address) : ''}${job.staff ? ' · Assigned: ' + escapeHtml(job.staff) : ''}</div>
-            </div>
-            <span class="badge ${job.status.replace(' ','-')}">${job.status}</span>
+    jobs.forEach(job => {
+      const card = document.createElement('div');
+      card.className = 'job-card';
+      card.innerHTML = `
+        <div class="job-top">
+          <div>
+            <h3>${escapeHtml(job.client)} — ${escapeHtml(job.service)}</h3>
+            <div class="job-meta">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}${job.address ? ' · ' + escapeHtml(job.address) : ''}${job.staff ? ' · Assigned: ' + escapeHtml(job.staff) : ''}</div>
           </div>
-          ${job.note ? `<div class="job-note">${escapeHtml(job.note)}</div>` : ''}
-          <div class="job-actions">
-            <select class="status-select" data-id="${job.id}">
-              <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
-              <option ${job.status==='In progress'?'selected':''}>In progress</option>
-              <option ${job.status==='Completed'?'selected':''}>Completed</option>
-            </select>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-
-    list.querySelectorAll('.status-select').forEach(sel => {
-      sel.addEventListener('change', () => {
-        const job = data.jobs.find(j => j.id === sel.dataset.id);
-        if(job){ job.status = sel.value; saveDashboard(data); render(); }
-      });
+          <span class="badge ${job.status.replace(' ','-')}">${job.status}</span>
+        </div>
+        ${job.note ? `<div class="job-note">${escapeHtml(job.note)}</div>` : ''}
+        <div class="job-actions">
+          <select class="status-select" data-id="${job.id}">
+            <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
+            <option ${job.status==='In progress'?'selected':''}>In progress</option>
+            <option ${job.status==='Completed'?'selected':''}>Completed</option>
+          </select>
+        </div>
+      `;
+      list.appendChild(card);
     });
 
+    list.querySelectorAll('.status-select').forEach(sel => {
+      sel.addEventListener('change', () => updateJob(sel.dataset.id, { status: sel.value }));
+    });
+  }
+
+  function renderNotes(notes){
     const notesList = document.getElementById('notesList');
     notesList.innerHTML = '';
-    document.getElementById('notesEmpty').style.display = data.notes.length ? 'none' : 'block';
-    data.notes
-      .slice()
-      .sort((a,b) => b.date.localeCompare(a.date))
-      .forEach(note => {
-        const div = document.createElement('div');
-        div.className = 'note';
-        div.innerHTML = `
-          <div>${escapeHtml(note.text)}</div>
-          <div class="meta">${escapeHtml(note.author)} · ${new Date(note.date).toLocaleString('en-CA')}</div>
-        `;
-        notesList.appendChild(div);
-      });
+    document.getElementById('notesEmpty').style.display = notes.length ? 'none' : 'block';
+    notes.forEach(note => {
+      const div = document.createElement('div');
+      div.className = 'note';
+      const when = note.date && note.date.toDate ? note.date.toDate() : new Date(note.date);
+      div.innerHTML = `
+        <div>${escapeHtml(note.text)}</div>
+        <div class="meta">${escapeHtml(note.author)} · ${when.toLocaleString('en-CA')}</div>
+      `;
+      notesList.appendChild(div);
+    });
   }
 
   document.getElementById('noteForm').addEventListener('submit', e => {
     e.preventDefault();
-    data.notes.push({
-      id: uid(),
+    addNote({
       author: document.getElementById('noteAuthor').value,
       text: document.getElementById('noteText').value,
-      date: new Date().toISOString()
-    });
-    saveDashboard(data);
-    document.getElementById('noteText').value = '';
-    render();
+      date: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => { document.getElementById('noteText').value = ''; });
   });
 
-  render();
+  requireRole('staff', () => {
+    watchJobs(renderJobs);
+    watchNotes(renderNotes);
+  });
 </script>
 </body>
 </html>
