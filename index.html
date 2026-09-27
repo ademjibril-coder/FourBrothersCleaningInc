@@ -170,6 +170,20 @@
   .why-item h3{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
   .why-item p{color:var(--steel);margin:0;font-size:.96rem;}
 
+  /* ---------- gallery slider ---------- */
+  .slider{position:relative;border-radius:14px;overflow:hidden;background:var(--navy);aspect-ratio:16/9;max-height:560px;}
+  .slider-track{display:flex;height:100%;transition:transform .45s cubic-bezier(.65,0,.35,1);}
+  .slider-track .slide{flex:0 0 100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center;}
+  .slider-track .slide img,.slider-track .slide video{width:100%;height:100%;object-fit:cover;}
+  .slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(11,27,51,.55);color:var(--white);font-size:1.5rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .slider-arrow:hover{background:rgba(11,27,51,.82);}
+  .slider-arrow.prev{left:14px;}
+  .slider-arrow.next{right:14px;}
+  .slider-dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:8px;}
+  .slider-dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0;}
+  .slider-dots button.active{background:var(--white);}
+  @media (max-width:600px){ .slider{aspect-ratio:4/5;} }
+
   /* ---------- how it works ---------- */
   .steps{
     background:var(--white);border:1px solid var(--line);border-radius:14px;
@@ -260,11 +274,9 @@
     .footer-grid{grid-template-columns:1fr;}
   }
   @media (max-width:420px){
-    .nav-row{gap:8px;padding:12px 16px;}
-    .brand-block{gap:8px;}
     .brand-block img{width:38px;height:38px;}
-    .brand-text span{font-size:.62rem;}
-    .brand-text strong{font-size:.85rem;}
+    .brand-text span{display:none;}
+    .brand-text strong{font-size:.92rem;}
     .call-btn{padding:10px;border-radius:50%;}
     .call-btn .call-text{display:none;}
   }
@@ -284,6 +296,7 @@
     <nav class="primary" id="primaryNav">
       <a href="#services">Services</a>
       <a href="#why">Why us</a>
+      <a href="#gallery">Gallery</a>
       <a href="#how">How it works</a>
       <a href="#areas">Service area</a>
       <a href="#contact">Contact</a>
@@ -425,6 +438,24 @@
           <div><h3>Straightforward pricing</h3><p>Quotes are based on the actual job, given up front, with no surprise add-ons after the fact.</p></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Our work</p>
+        <h2>Recent jobs, in photos and video.</h2>
+        <p>A look at some of the spaces we've cleaned.</p>
+      </div>
+      <div class="slider" id="gallerySlider" style="display:none;">
+        <div class="slider-track" id="sliderTrack"></div>
+        <button class="slider-arrow prev" id="sliderPrev" aria-label="Previous photo or video" type="button">‹</button>
+        <button class="slider-arrow next" id="sliderNext" aria-label="Next photo or video" type="button">›</button>
+        <div class="slider-dots" id="sliderDots"></div>
+      </div>
+      <p class="empty" id="galleryEmpty" style="color:var(--steel);">Photos and video coming soon.</p>
     </div>
   </section>
 
@@ -597,8 +628,68 @@
   </div>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="dashboard-data.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- gallery slider ---------- */
+  let sliderMedia = [];
+  let sliderIndex = 0;
+
+  function updateSlider(){
+    const track = document.getElementById('sliderTrack');
+    const dots = document.getElementById('sliderDots');
+    if(!track) return;
+    track.style.transform = 'translateX(-' + (sliderIndex * 100) + '%)';
+    dots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === sliderIndex));
+  }
+
+  watchMedia(media => {
+    sliderMedia = media;
+    const wrap = document.getElementById('gallerySlider');
+    const empty = document.getElementById('galleryEmpty');
+    const track = document.getElementById('sliderTrack');
+    const dots = document.getElementById('sliderDots');
+    if(!media.length){
+      wrap.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    wrap.style.display = 'block';
+    empty.style.display = 'none';
+    track.innerHTML = media.map(m =>
+      '<div class="slide">' +
+      (m.type === 'video'
+        ? '<video src="' + m.url + '" controls playsinline muted></video>'
+        : '<img src="' + m.url + '" alt="Four Brothers Cleaning — completed job">') +
+      '</div>'
+    ).join('');
+    dots.innerHTML = media.map((_, i) => '<button data-i="' + i + '" aria-label="Go to slide ' + (i + 1) + '"></button>').join('');
+    sliderIndex = Math.min(sliderIndex, media.length - 1);
+    updateSlider();
+    dots.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => { sliderIndex = +b.dataset.i; updateSlider(); });
+    });
+  });
+
+  document.getElementById('sliderPrev').addEventListener('click', () => {
+    if(!sliderMedia.length) return;
+    sliderIndex = (sliderIndex - 1 + sliderMedia.length) % sliderMedia.length;
+    updateSlider();
+  });
+  document.getElementById('sliderNext').addEventListener('click', () => {
+    if(!sliderMedia.length) return;
+    sliderIndex = (sliderIndex + 1) % sliderMedia.length;
+    updateSlider();
+  });
+  setInterval(() => {
+    if(sliderMedia.length > 1) document.getElementById('sliderNext').click();
+  }, 6000);
 
   const menuBtn = document.getElementById('menuBtn');
   const nav = document.getElementById('primaryNav');
@@ -614,9 +705,6 @@
   const form = document.getElementById('quoteForm');
   const status = document.getElementById('formStatus');
   const submitBtn = document.getElementById('submitQuote');
-
-  /* Replace with your own endpoint from formspree.io — see the note below the form. */
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
   const validators = {
     name: v => v.trim().length > 0 || 'Enter your name.',
@@ -657,18 +745,17 @@
     submitBtn.textContent = 'Sending…';
     status.style.display = 'none';
 
-    fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(form)
-    }).then(res => {
-      if(res.ok){
-        status.className = 'success';
-        status.textContent = "Thanks — your request is in. We'll be in touch soon.";
-        form.reset();
-      } else {
-        throw new Error('Submission failed');
-      }
+    addQuote({
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      service: document.getElementById('service').value,
+      area: document.getElementById('area').value,
+      details: document.getElementById('details').value
+    }).then(() => {
+      status.className = 'success';
+      status.textContent = "Thanks — your request is in. We'll be in touch soon.";
+      form.reset();
     }).catch(() => {
       status.className = 'error';
       status.textContent = "Something went wrong sending that. Please call or email us directly instead.";
