@@ -14,17 +14,24 @@
   body{margin:0;background:var(--paper);font-family:'Inter',system-ui,sans-serif;color:var(--ink);}
   h1,h2,h3{font-family:'Archivo';color:var(--navy);margin:0;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
-  header{background:var(--white);border-bottom:1px solid var(--line);}
+  header{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;}
   .nav-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;flex-wrap:wrap;}
   .brand{display:flex;align-items:center;gap:12px;}
   .brand img{width:42px;height:42px;object-fit:contain;}
   .brand strong{font-family:'Archivo';font-weight:800;font-size:1rem;}
   .brand span{display:block;font-size:.72rem;color:var(--steel);}
+  .header-actions{display:flex;align-items:center;gap:10px;}
+  .icon-btn{position:relative;background:none;border:1px solid var(--line);border-radius:7px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--navy);}
+  .icon-btn:hover{background:var(--paper);}
+  .icon-btn svg{width:19px;height:19px;}
+  .badge-count{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#B3261E;color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;}
   .logout{background:none;border:1px solid var(--line);border-radius:7px;padding:9px 16px;font-weight:600;font-size:.85rem;cursor:pointer;color:var(--ink);}
   .logout:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
   main{padding:40px 0 80px;}
-  .panel{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:32px;}
-  .panel h2{font-size:1.15rem;font-weight:800;margin-bottom:18px;}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:32px;scroll-margin-top:80px;}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap;}
+  .panel h2{font-size:1.15rem;font-weight:800;}
+  .panel .hint{color:var(--steel);font-size:.85rem;margin-top:2px;}
   .field-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
   .field{margin-bottom:14px;}
   label{display:block;font-size:.8rem;font-weight:600;margin-bottom:5px;color:var(--navy);}
@@ -33,8 +40,11 @@
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:7px;font-weight:700;font-size:.88rem;border:none;cursor:pointer;text-decoration:none;}
   .btn-primary{background:var(--blue);color:var(--white);}
   .btn-primary:hover{background:var(--blue-deep);}
+  .btn-primary:disabled{opacity:.6;cursor:default;}
   .btn-danger{background:#FBEAEA;color:#B3261E;border:1px solid #F3C9C9;padding:6px 12px;font-size:.78rem;}
   .btn-danger:hover{background:#F3C9C9;}
+  .btn-outline{background:none;border:1px solid var(--line);color:var(--navy);padding:6px 12px;font-size:.78rem;}
+  .btn-outline:hover{background:var(--paper);}
   table{width:100%;border-collapse:collapse;font-size:.88rem;}
   th{text-align:left;color:var(--steel);font-weight:600;font-size:.78rem;text-transform:none;padding:8px 10px;border-bottom:1px solid var(--line);}
   td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
@@ -48,6 +58,36 @@
   .notes-list{display:flex;flex-direction:column;gap:12px;}
   .note{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
   .note .meta{font-size:.75rem;color:var(--steel);margin-top:4px;}
+
+  /* quotes */
+  .quote-list{display:flex;flex-direction:column;gap:10px;}
+  .quote-card{border:1px solid var(--line);border-radius:10px;padding:16px;position:relative;}
+  .quote-card.unread{border-color:var(--blue-bright);background:#F2F7FE;}
+  .quote-card.unread::before{content:'New';position:absolute;top:14px;right:16px;background:var(--blue);color:#fff;font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:999px;}
+  .quote-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-right:60px;}
+  .quote-top h3{font-size:1rem;font-weight:700;}
+  .quote-meta{color:var(--steel);font-size:.82rem;margin-top:3px;}
+  .quote-body{margin-top:10px;font-size:.9rem;}
+  .quote-body p{margin:4px 0;}
+  .quote-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+
+  /* gallery */
+  .upload-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+  .upload-row input[type=file]{width:auto;flex:1;min-width:220px;}
+  .progress-wrap{width:100%;height:6px;border-radius:999px;background:var(--paper);overflow:hidden;margin-top:8px;display:none;}
+  .progress-bar{height:100%;width:0;background:var(--blue);transition:width .2s;}
+  .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+  .media-item{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;background:var(--navy);}
+  .media-item img,.media-item video{width:100%;height:100%;object-fit:cover;display:block;}
+  .media-item .media-del{position:absolute;top:6px;right:6px;padding:4px 9px;font-size:.7rem;}
+  .media-item .media-type{position:absolute;bottom:6px;left:6px;background:rgba(11,27,51,.75);color:#fff;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;}
+
+  /* account */
+  .settings-form{max-width:380px;}
+  #pwStatus{font-size:.85rem;font-weight:600;margin-top:10px;display:none;}
+  #pwStatus.success{color:#1F7A45;}
+  #pwStatus.error{color:#B3261E;}
+
   @media (max-width:760px){
     .field-row{grid-template-columns:1fr;}
     table, thead, tbody, th, td, tr{display:block;}
@@ -66,12 +106,29 @@
       <img src="logo.jpg" alt="Four Brothers Cleaning logo">
       <div><strong>Four Brothers</strong><span>Admin dashboard</span></div>
     </div>
-    <button class="logout" id="logoutBtn">Log out</button>
+    <div class="header-actions">
+      <button class="icon-btn" id="bellBtn" aria-label="Quote request notifications" title="Quote requests">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge-count" id="bellCount" style="display:none;">0</span>
+      </button>
+      <button class="logout" id="logoutBtn">Log out</button>
+    </div>
   </div>
 </header>
 
 <main>
   <div class="wrap">
+
+    <div class="panel" id="quotesPanel">
+      <div class="panel-head">
+        <div>
+          <h2>Quote requests</h2>
+          <p class="hint">Submitted from the "Request a free quote" form on the site.</p>
+        </div>
+      </div>
+      <div class="quote-list" id="quotesList"></div>
+      <p class="empty" id="quotesEmpty" style="display:none;">No quote requests yet.</p>
+    </div>
 
     <div class="panel">
       <h2>Add a job</h2>
@@ -129,82 +186,58 @@
       <p class="empty" id="notesEmpty" style="display:none;">No team notes yet.</p>
     </div>
 
+    <div class="panel" id="galleryPanel">
+      <div class="panel-head">
+        <div>
+          <h2>Gallery — photos &amp; videos</h2>
+          <p class="hint">Anything uploaded here appears in the slider on the main site.</p>
+        </div>
+      </div>
+      <div class="upload-row">
+        <input type="file" id="mediaFile" accept="image/*,video/*">
+        <button type="button" class="btn btn-primary" id="mediaUploadBtn">Upload</button>
+      </div>
+      <div class="progress-wrap" id="mediaProgressWrap"><div class="progress-bar" id="mediaProgressBar"></div></div>
+      <p id="mediaStatus" style="font-size:.85rem;color:var(--steel);margin:0 0 16px;"></p>
+      <div class="media-grid" id="mediaGrid"></div>
+      <p class="empty" id="mediaEmpty" style="display:none;">No photos or videos uploaded yet.</p>
+    </div>
+
+    <div class="panel" id="accountPanel">
+      <h2>Account settings</h2>
+      <p class="hint" style="margin-bottom:18px;">Change the password you use to sign in to this dashboard.</p>
+      <form id="pwForm" class="settings-form">
+        <div class="field">
+          <label for="pwCurrent">Current password</label>
+          <input type="password" id="pwCurrent" autocomplete="current-password" required>
+        </div>
+        <div class="field">
+          <label for="pwNew">New password</label>
+          <input type="password" id="pwNew" autocomplete="new-password" minlength="6" required>
+        </div>
+        <div class="field">
+          <label for="pwConfirm">Confirm new password</label>
+          <input type="password" id="pwConfirm" autocomplete="new-password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="pwSubmit">Update password</button>
+        <p id="pwStatus"></p>
+      </form>
+    </div>
+
   </div>
 </main>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="dashboard-data.js"></script>
 <script>
-  requireRole('admin');
   document.getElementById('logoutBtn').addEventListener('click', logout);
-
-  let data = loadDashboard();
-
-  function render(){
-    const body = document.getElementById('jobsBody');
-    body.innerHTML = '';
-    document.getElementById('jobsEmpty').style.display = data.jobs.length ? 'none' : 'block';
-    data.jobs
-      .slice()
-      .sort((a,b) => (a.date || '').localeCompare(b.date || ''))
-      .forEach(job => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td data-label="Date">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}</td>
-          <td data-label="Client"><strong>${escapeHtml(job.client)}</strong><br><span style="color:var(--steel);font-size:.8rem;">${escapeHtml(job.address || '')}</span></td>
-          <td data-label="Service">${escapeHtml(job.service)}</td>
-          <td data-label="Assigned">${escapeHtml(job.staff || '—')}</td>
-          <td data-label="Status">
-            <select class="status-select" data-id="${job.id}">
-              <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
-              <option ${job.status==='In progress'?'selected':''}>In progress</option>
-              <option ${job.status==='Completed'?'selected':''}>Completed</option>
-            </select>
-          </td>
-          <td data-label=""><button class="btn-danger" data-del="${job.id}">Delete</button></td>
-        `;
-        body.appendChild(tr);
-      });
-
-    body.querySelectorAll('.status-select').forEach(sel => {
-      sel.addEventListener('change', () => {
-        const job = data.jobs.find(j => j.id === sel.dataset.id);
-        if(job){ job.status = sel.value; saveDashboard(data); }
-      });
-    });
-    body.querySelectorAll('[data-del]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        data.jobs = data.jobs.filter(j => j.id !== btn.dataset.del);
-        saveDashboard(data);
-        render();
-      });
-    });
-
-    const notesList = document.getElementById('notesList');
-    notesList.innerHTML = '';
-    document.getElementById('notesEmpty').style.display = data.notes.length ? 'none' : 'block';
-    data.notes
-      .slice()
-      .sort((a,b) => b.date.localeCompare(a.date))
-      .forEach(note => {
-        const div = document.createElement('div');
-        div.className = 'note';
-        div.innerHTML = `
-          <div>
-            <div>${escapeHtml(note.text)}</div>
-            <div class="meta">${escapeHtml(note.author)} · ${new Date(note.date).toLocaleString('en-CA')}</div>
-          </div>
-          <button class="btn-danger" data-delnote="${note.id}">Delete</button>
-        `;
-        notesList.appendChild(div);
-      });
-    notesList.querySelectorAll('[data-delnote]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        data.notes = data.notes.filter(n => n.id !== btn.dataset.delnote);
-        saveDashboard(data);
-        render();
-      });
-    });
-  }
+  document.getElementById('bellBtn').addEventListener('click', () => {
+    document.getElementById('quotesPanel').scrollIntoView({ behavior: 'smooth' });
+  });
 
   function escapeHtml(str){
     const d = document.createElement('div');
@@ -212,10 +245,43 @@
     return d.innerHTML;
   }
 
+  /* ---------- jobs ---------- */
+
+  function renderJobs(jobs){
+    const body = document.getElementById('jobsBody');
+    body.innerHTML = '';
+    document.getElementById('jobsEmpty').style.display = jobs.length ? 'none' : 'block';
+    jobs.forEach(job => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td data-label="Date">${fmtDate(job.date)}${job.time ? ' · ' + job.time : ''}</td>
+        <td data-label="Client"><strong>${escapeHtml(job.client)}</strong><br><span style="color:var(--steel);font-size:.8rem;">${escapeHtml(job.address || '')}</span></td>
+        <td data-label="Service">${escapeHtml(job.service)}</td>
+        <td data-label="Assigned">${escapeHtml(job.staff || '—')}</td>
+        <td data-label="Status">
+          <select class="status-select" data-id="${job.id}">
+            <option ${job.status==='Scheduled'?'selected':''}>Scheduled</option>
+            <option ${job.status==='In progress'?'selected':''}>In progress</option>
+            <option ${job.status==='Completed'?'selected':''}>Completed</option>
+          </select>
+        </td>
+        <td data-label=""><button class="btn-danger" data-del="${job.id}">Delete</button></td>
+      `;
+      body.appendChild(tr);
+    });
+    body.querySelectorAll('.status-select').forEach(sel => {
+      sel.addEventListener('change', () => updateJob(sel.dataset.id, { status: sel.value }));
+    });
+    body.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(confirm('Delete this job?')) deleteJob(btn.dataset.del);
+      });
+    });
+  }
+
   document.getElementById('jobForm').addEventListener('submit', e => {
     e.preventDefault();
-    data.jobs.push({
-      id: uid(),
+    addJob({
       client: document.getElementById('client').value,
       address: document.getElementById('jaddress').value,
       service: document.getElementById('jservice').value,
@@ -224,26 +290,177 @@
       staff: document.getElementById('jstaff').value,
       note: document.getElementById('jnote').value,
       status: 'Scheduled'
-    });
-    saveDashboard(data);
-    e.target.reset();
-    render();
+    }).then(() => e.target.reset());
   });
+
+  /* ---------- notes ---------- */
+
+  function renderNotes(notes){
+    const notesList = document.getElementById('notesList');
+    notesList.innerHTML = '';
+    document.getElementById('notesEmpty').style.display = notes.length ? 'none' : 'block';
+    notes.forEach(note => {
+      const div = document.createElement('div');
+      div.className = 'note';
+      const when = note.date && note.date.toDate ? note.date.toDate() : new Date(note.date);
+      div.innerHTML = `
+        <div>
+          <div>${escapeHtml(note.text)}</div>
+          <div class="meta">${escapeHtml(note.author)} · ${when.toLocaleString('en-CA')}</div>
+        </div>
+        <button class="btn-danger" data-delnote="${note.id}">Delete</button>
+      `;
+      notesList.appendChild(div);
+    });
+    notesList.querySelectorAll('[data-delnote]').forEach(btn => {
+      btn.addEventListener('click', () => deleteNote(btn.dataset.delnote));
+    });
+  }
 
   document.getElementById('noteForm').addEventListener('submit', e => {
     e.preventDefault();
-    data.notes.push({
-      id: uid(),
+    addNote({
       author: document.getElementById('noteAuthor').value,
       text: document.getElementById('noteText').value,
-      date: new Date().toISOString()
-    });
-    saveDashboard(data);
-    document.getElementById('noteText').value = '';
-    render();
+      date: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => { document.getElementById('noteText').value = ''; });
   });
 
-  render();
+  /* ---------- quote requests / notifications ---------- */
+
+  function renderQuotes(quotes){
+    const list = document.getElementById('quotesList');
+    list.innerHTML = '';
+    document.getElementById('quotesEmpty').style.display = quotes.length ? 'none' : 'block';
+
+    const unread = quotes.filter(q => !q.read).length;
+    const bellCount = document.getElementById('bellCount');
+    bellCount.style.display = unread ? 'flex' : 'none';
+    bellCount.textContent = unread > 99 ? '99+' : unread;
+    document.title = (unread ? '(' + unread + ') ' : '') + 'Admin Dashboard | Four Brothers Cleaning';
+
+    quotes.forEach(q => {
+      const when = q.createdAt && q.createdAt.toDate ? q.createdAt.toDate() : (q.createdAt ? new Date(q.createdAt) : null);
+      const card = document.createElement('div');
+      card.className = 'quote-card' + (q.read ? '' : ' unread');
+      card.innerHTML = `
+        <div class="quote-top">
+          <div>
+            <h3>${escapeHtml(q.name || 'No name given')}</h3>
+            <div class="quote-meta">${when ? when.toLocaleString('en-CA') : ''}${q.service ? ' · ' + escapeHtml(q.service) : ''}${q.area ? ' · ' + escapeHtml(q.area) : ''}</div>
+          </div>
+        </div>
+        <div class="quote-body">
+          <p>${q.email ? `<a href="mailto:${escapeHtml(q.email)}">${escapeHtml(q.email)}</a>` : ''}${q.email && q.phone ? ' · ' : ''}${q.phone ? `<a href="tel:${escapeHtml(q.phone)}">${escapeHtml(q.phone)}</a>` : ''}</p>
+          ${q.details ? `<p>${escapeHtml(q.details)}</p>` : ''}
+        </div>
+        <div class="quote-actions">
+          <button class="btn-outline" data-toggleread="${q.id}" data-read="${q.read ? '1' : '0'}">${q.read ? 'Mark unread' : 'Mark read'}</button>
+          <button class="btn-danger" data-delquote="${q.id}">Delete</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+
+    list.querySelectorAll('[data-toggleread]').forEach(btn => {
+      btn.addEventListener('click', () => markQuoteRead(btn.dataset.toggleread, btn.dataset.read !== '1'));
+    });
+    list.querySelectorAll('[data-delquote]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(confirm('Delete this quote request?')) deleteQuote(btn.dataset.delquote);
+      });
+    });
+  }
+
+  /* ---------- gallery ---------- */
+
+  const mediaFile = document.getElementById('mediaFile');
+  const mediaUploadBtn = document.getElementById('mediaUploadBtn');
+  const mediaStatus = document.getElementById('mediaStatus');
+  const mediaProgressWrap = document.getElementById('mediaProgressWrap');
+  const mediaProgressBar = document.getElementById('mediaProgressBar');
+
+  mediaUploadBtn.addEventListener('click', () => {
+    const file = mediaFile.files[0];
+    if(!file){ mediaStatus.textContent = 'Choose a photo or video first.'; return; }
+    mediaUploadBtn.disabled = true;
+    mediaProgressWrap.style.display = 'block';
+    mediaProgressBar.style.width = '0%';
+    mediaStatus.textContent = 'Uploading…';
+    uploadMedia(file, pct => { mediaProgressBar.style.width = pct + '%'; })
+      .then(() => {
+        mediaStatus.textContent = 'Uploaded.';
+        mediaFile.value = '';
+      })
+      .catch(() => { mediaStatus.textContent = 'Upload failed. Try again.'; })
+      .finally(() => {
+        mediaUploadBtn.disabled = false;
+        setTimeout(() => { mediaProgressWrap.style.display = 'none'; }, 800);
+      });
+  });
+
+  function renderMedia(media){
+    const grid = document.getElementById('mediaGrid');
+    grid.innerHTML = '';
+    document.getElementById('mediaEmpty').style.display = media.length ? 'none' : 'block';
+    media.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'media-item';
+      div.innerHTML = `
+        ${m.type === 'video' ? `<video src="${m.url}" muted></video>` : `<img src="${m.url}" alt="">`}
+        <span class="media-type">${m.type}</span>
+        <button class="btn-danger media-del" data-delmedia="${m.id}" data-path="${escapeHtml(m.path || '')}">Delete</button>
+      `;
+      grid.appendChild(div);
+    });
+    grid.querySelectorAll('[data-delmedia]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(confirm('Remove this from the gallery?')) deleteMedia(btn.dataset.delmedia, btn.dataset.path);
+      });
+    });
+  }
+
+  /* ---------- account settings ---------- */
+
+  document.getElementById('pwForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const current = document.getElementById('pwCurrent').value;
+    const next = document.getElementById('pwNew').value;
+    const confirmVal = document.getElementById('pwConfirm').value;
+    const status = document.getElementById('pwStatus');
+    const submitBtn = document.getElementById('pwSubmit');
+
+    if(next !== confirmVal){
+      status.className = 'error';
+      status.style.display = 'block';
+      status.textContent = "New password and confirmation don't match.";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Updating…';
+    changePassword(current, next).then(() => {
+      status.className = 'success';
+      status.textContent = 'Password updated.';
+      e.target.reset();
+    }).catch(err => {
+      status.className = 'error';
+      status.textContent = err.message || 'Could not update password.';
+    }).finally(() => {
+      status.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Update password';
+    });
+  });
+
+  /* ---------- boot ---------- */
+
+  requireRole('admin', () => {
+    watchJobs(renderJobs);
+    watchNotes(renderNotes);
+    watchQuotes(renderQuotes);
+    watchMedia(renderMedia);
+  });
 </script>
 </body>
 </html>
